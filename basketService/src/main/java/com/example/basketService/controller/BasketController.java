@@ -1,71 +1,66 @@
 package com.example.basketService.controller;
 
 import com.example.basketService.entity.Basket;
-import com.example.basketService.entity.BasketItem;
-import com.example.basketService.exception.BasketItemNotFoundException;
-import com.example.basketService.exception.BasketNotFoundException;
+import com.example.basketService.entity.ProductItemRequest;
 import com.example.basketService.service.BasketService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/baskets")
+@RequestMapping("/basket")
 public class BasketController {
-    @Autowired
-    private BasketService basketService;
 
-    /**
-     * Create a new basket for a given customer ID.
-     *
-     * @param customerId the ID of the customer for whom the basket is being created
-     * @return the newly created Basket object
-     */
+    private final BasketService basketService;
+
+    // Constructor for the BasketController class, which injects an instance of BasketService
+    public BasketController(BasketService basketService) {
+        this.basketService = basketService;
+    }
+
+    // REST endpoint for creating a new basket
     @PostMapping
-    public ResponseEntity<Basket> createBasket(@RequestParam("customerId") Long customerId) {
-        Basket basket = basketService.createBasket(customerId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(basket);
+    public ResponseEntity<Basket> createBasket() {
+        Basket basket = basketService.createBasket();
+        return new ResponseEntity<>(basket, HttpStatus.CREATED);
     }
 
-    /**
-     * Retrieve an existing basket for a given customer ID.
-     *
-     * @param customerId the ID of the customer whose basket is being retrieved
-     * @return the Basket object for the given customer ID
-     */
-    @GetMapping("/{customerId}")
-    public ResponseEntity<Basket> getBasket(@PathVariable("customerId") Long customerId) throws BasketNotFoundException {
-        Basket basket = basketService.getBasket(customerId);
-        return ResponseEntity.ok(basket);
+    // REST endpoint for retrieving a basket by ID
+    @GetMapping("/{id}")
+    public ResponseEntity<Basket> getBasket(@PathVariable Long id) {
+        Basket basket = basketService.getBasket(id);
+        if (basket == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(basket, HttpStatus.OK);
     }
 
-    /**
-     * Add a new item to an existing basket.
-     *
-     * @param customerId  the ID of the customer whose basket is being updated
-     * @param itemRequest the BasketItemRequest object containing the details of the item to be added
-     * @return the updated Basket object
-     */
-    @PostMapping("/{customerId}/items")
-    public ResponseEntity<Basket> addItemToBasket(@PathVariable("customerId") Long customerId,
-                                                  @RequestBody BasketItem itemRequest) throws BasketNotFoundException {
-        Basket basket = basketService.addItemToBasket(customerId, itemRequest.getProductId(),
-                itemRequest.getQuantity(), itemRequest.getPrice(), itemRequest.getCurrency());
-        return ResponseEntity.ok(basket);
+    // REST endpoint for adding a product to a basket
+    @PostMapping("/{basketId}/products")
+    public ResponseEntity<Void> addProductToBasket(@PathVariable Long basketId, @RequestBody ProductItemRequest productItemRequest) {
+        basketService.addProductToBasket(basketId, productItemRequest.getProductId(), productItemRequest.getQuantity());
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    /**
-     * Remove an item from an existing basket.
-     *
-     * @param customerId the ID of the customer whose basket is being updated
-     * @param productId  the ID of the product to be removed from the basket
-     * @return the updated Basket object
-     */
-    @DeleteMapping("/{customerId}/items/{productId}")
-    public ResponseEntity<Basket> removeItemFromBasket(@PathVariable("customerId") Long customerId,
-                                                       @PathVariable("productId") Long productId) throws BasketItemNotFoundException, BasketNotFoundException {
-        Basket basket = basketService.removeItemFromBasket(customerId, productId);
-        return ResponseEntity.ok(basket);
+    // REST endpoint for removing a product from a basket
+    @DeleteMapping("/{basketId}/products/{productId}")
+    public ResponseEntity<Void> removeProductFromBasket(@PathVariable Long basketId, @PathVariable Long productId) {
+        basketService.removeProductFromBasket(basketId, productId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    // REST endpoint for updating a product in a basket
+    @PutMapping("/{basketId}/products/{productId}")
+    public ResponseEntity<Void> updateProductInBasket(@PathVariable Long basketId, @PathVariable Long productId, @RequestBody ProductItemRequest productItemRequest) {
+        basketService.updateProductInBasket(basketId, productId, productItemRequest.getQuantity());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    // REST endpoint for getting the total price of a basket
+    @GetMapping("/{id}/total-price")
+    public ResponseEntity<Double> getTotalPrice(@PathVariable Long id) {
+        double totalPrice = basketService.getTotalPrice(id);
+        return new ResponseEntity<>(totalPrice, HttpStatus.OK);
+    }
+
 }

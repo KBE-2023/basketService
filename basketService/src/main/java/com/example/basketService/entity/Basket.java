@@ -1,169 +1,87 @@
 package com.example.basketService.entity;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+
 import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 /**
- * The Basket entity represents a shopping basket in the Basket microservice.
+ * Represents a customer's basket.
  */
-@Entity
-@Table(name = "basket")
 public class Basket {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; // unique identifier for the basket
+    private Long customerId; // unique identifier for the customer who owns the basket
+    private List<ProductItem> products; // list of product items added to the basket
 
-    @Column(name = "customer_id")
-    private Long customerId;
+    public Basket(Long id, Long customerId, List<ProductItem> products) {
+        this.id = id;
+        this.customerId = customerId;
+        this.products = products;
+    }
 
-    @OneToMany(mappedBy = "basket", cascade = CascadeType.ALL)
-    private List<BasketItem> items;
+    public Basket() {
 
-    @Column(name = "total_price")
-    private BigDecimal totalPrice;
+    }
 
-    @Column(name = "currency")
-    private String currency;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
-    /**
-     * Gets the ID of the basket.
-     *
-     * @return The ID of the basket.
-     */
+    // Getter and Setter methods
     public Long getId() {
         return id;
     }
 
-    /**
-     * Sets the ID of the basket.
-     *
-     * @param id The ID of the basket.
-     */
     public void setId(Long id) {
         this.id = id;
     }
 
-    /**
-     * Gets the ID of the customer who owns the basket.
-     *
-     * @return The ID of the customer who owns the basket.
-     */
     public Long getCustomerId() {
         return customerId;
     }
 
-    /**
-     * Sets the ID of the customer who owns the basket.
-     *
-     * @param customerId The ID of the customer who owns the basket.
-     */
     public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }
 
-    /**
-     * Gets the list of items in the basket.
-     *
-     * @return The list of items in the basket.
-     */
-    public List<BasketItem> getItems() {
-        return items;
+    public List<ProductItem> getProducts() {
+        return products;
     }
 
-    /**
-     * Sets the list of items in the basket.
-     *
-     * @param items The list of items in the basket.
-     */
-    public void setItems(List<BasketItem> items) {
-        this.items = items;
+    public void setProducts(List<ProductItem> products) {
+        this.products = products;
     }
 
-    /**
-     * Gets the total price of the items in the basket.
-     *
-     * @return The total price of the items in the basket.
-     */
-    public BigDecimal getTotalPrice() {
+    // Add a product to the basket
+    public void addProduct(ProductItem product) {
+        products.add(product);
+    }
+
+    // Remove a product from the basket
+    public void removeProduct(ProductItem product) {
+        products.remove(product);
+    }
+
+    // Update a product in the basket
+    public void updateProduct(ProductItem product) {
+        for (int i = 0; i < products.size(); i++) {
+            if (products.get(i).getProductId() == product.getProductId()) {
+                products.set(i, product);
+            }
+        }
+    }
+
+    // Calculate the total price of all products in the basket
+    public double getTotalPrice() {
+        double totalPrice = 0.0;
+        for (ProductItem product : products) {
+            totalPrice += product.getTotalPrice();
+        }
         return totalPrice;
     }
 
-    /**
-     * Sets the total price of the items in the basket.
-     *
-     * @param totalPrice The total price of the items in the basket.
-     */
-    public void setTotalPrice(BigDecimal totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
-    /**
-     * Gets the currency code (ISO 4217) of the basket.
-     *
-     * @return The currency code (ISO 4217) of the basket.
-     */
-    public String getCurrency() {
-        return currency;
-    }
-
-    /**
-     * Sets the currency code (ISO 4217) of the basket.
-     *
-     * @param currency The currency code (ISO 4217) of the basket.
-     */
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
-
-    /**
-     * Gets the date and time when the basket was created.
-     *
-     * @return The date and time when the basket was created.
-     */
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    /**
-     * Sets the date and time when the basket was created.
-     *
-     * @param createdAt The date and time when the basket was created.
-     */
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    /**
-     * Gets the date and time when the basket was last updated.
-     *
-     * @return The date and time when the basket was last updated.
-     */
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    /**
-     * Sets the date and time when the basket was last updated.
-     *
-     * @param updatedAt The date and time when the basket was last updated.
-     */
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
+    // Return a string representation of the basket object
+    @Override
+    public String toString() {
+        return "Basket{" +
+                "id=" + id +
+                ", customerId=" + customerId +
+                ", products=" + products +
+                '}';
     }
 }
