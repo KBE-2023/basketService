@@ -5,25 +5,19 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.0.2</version>
+		<version>2.7.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
-	<artifactId>basketService</artifactId>
+	<groupId>com.kbe22-23</groupId>
+	<artifactId>price-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>basketService</name>
-	<description>Basket Service for ecommerce application</description>
+	<name>price-service</name>
+	<description>micorservice for price management</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
+
 	<dependencies>
-
-		<dependency>
-			<groupId>javax.validation</groupId>
-			<artifactId>validation-api</artifactId>
-			<version>2.0.1.Final</version>
-		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -46,11 +40,9 @@
 			<!--<scope>runtime</scope>-->
 		</dependency>
 
-
 		<dependency>
-			<groupId>org.hibernate.validator</groupId>
-			<artifactId>hibernate-validator</artifactId>
-			<version>8.0.0.Final</version>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
 		</dependency>
 
 		<dependency>
@@ -64,8 +56,8 @@
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 
-	</dependencies>
 
+	</dependencies>
 
 	<build>
 		<plugins>

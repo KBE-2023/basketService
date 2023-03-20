@@ -1,10 +1,10 @@
-package com.example.basketService;
+package com.kbe2223.basketservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class BasketServiceApplicationTests {
+class PriceRepositoryApplicationTests {
 
 	@Test
 	void contextLoads() {
