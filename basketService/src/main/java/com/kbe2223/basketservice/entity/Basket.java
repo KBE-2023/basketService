@@ -8,16 +8,16 @@ import java.util.ArrayList;
 @Entity
 public class Basket {
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+   /* @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;*/
+
+    @Id
+    private Long customerId;
 
     private double totalPrice;
 
 
     private String products;
-
-    @Id
-    private Long customerId;
 
     public Basket() {}
 
@@ -27,14 +27,14 @@ public class Basket {
         this.customerId = customerId;
     }
 
-    public Long getId() {
+   /* public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
-
+*/
     public double getTotalPrice() {
         return totalPrice;
     }
