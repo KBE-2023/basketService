@@ -85,10 +85,10 @@ public class BasketController {
      * @param id The ID of the basket record to delete.
      * @return A ResponseEntity with an HTTP status code indicating success or failure.
      */
-    @DeleteMapping("/{id}")
+   /* @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteBasket(@PathVariable Long id) {
         basketService.deleteBasket(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+    }*/
 
 }
