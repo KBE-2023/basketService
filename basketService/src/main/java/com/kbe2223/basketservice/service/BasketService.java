@@ -18,7 +18,7 @@ public class BasketService {
     /**
      * Retrieves a basket record by ID.
      *
-     * @param id The ID of the basket record to retrieve.
+     * @param custId The ID of the basket record to retrieve.
      * @return The retrieved Basket object, or null if no record with the specified ID was found.
      */
     public Basket getBasketById(Long custId) {
@@ -57,8 +57,8 @@ public class BasketService {
         if (existingBasket != null) {
             //existingBasket.setCustomerId(updatedBasket.getCustomerId());
             // concatenate to already existing list of products
-            existingBasket.setProducts(existingBasket.getProducts() + "," + updatedBasket.getProducts());
-            existingBasket.setTotalPrice(existingBasket.getTotalPrice() + updatedBasket.getTotalPrice());
+            existingBasket.setProducts( updatedBasket.getProducts());
+            existingBasket.setTotalPrice( updatedBasket.getTotalPrice());
            return basketRepository.save(existingBasket);
         }
         return null;
@@ -69,8 +69,8 @@ public class BasketService {
      *
      * @param id The ID of the basket record to delete.
      */
-    public void deleteBasket(Long id) {
+   /* public void deleteBasket(Long id) {
         basketRepository.deleteById(id);
-    }
+    }*/
 
 }
