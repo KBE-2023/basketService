@@ -69,8 +69,8 @@ public class BasketService {
      *
      * @param id The ID of the basket record to delete.
      */
-   /* public void deleteBasket(Long id) {
+    public void deleteBasket(Long id) {
         basketRepository.deleteById(id);
-    }*/
+    }
 
 }

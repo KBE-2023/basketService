@@ -1,4 +1,6 @@
 package com.kbe2223.basketservice.entity;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -6,6 +8,7 @@ import javax.persistence.Id;
 import java.util.ArrayList;
 
 @Entity
+//@EnableJpaRepositories(basePackages = {"com.kbe2223.basketservice.repository", "com.kbe2223.basketservice.entity"})
 public class Basket {
 
    /* @GeneratedValue(strategy = GenerationType.AUTO)
